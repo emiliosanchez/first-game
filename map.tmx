@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32">
+  <image source="tiles.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="2" source="triggers.tsx"/>
+ <tileset firstgid="8" name="sample-tileset" tilewidth="32" tileheight="32">
+  <image source="sample-tileset.png" width="192" height="128"/>
+ </tileset>
+ <tileset firstgid="32" name="22231" tilewidth="32" tileheight="32">
+  <image source="../../22231.gif" width="32" height="32"/>
+ </tileset>
+ <layer name="set" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztmtsKgzAQRPexF6j2TvH//9OEUGhDt2ZNYydxDsyzOe64+mAvItfKc3DppX7ogQU9sFijx9Hl9JJzqUPNYI3zQCbXA6VrnAcW3FdY0COA0jXOAwvuKyzoEUDpGueBBfcVFvQIoHSN88CC+woLegRSu1a6ky3P46EElb3LIO8emoPFY+m95mfRSboH6kwuLndp9/mwgPJubHlf1UjO99VUluyYxWNql/1zr6V6WByQPLQO+a784vwbl22U3SyDQIlepZzTv7vif49uAB7xuTslOff8G89vk/jeWaOd+1Nyr6VdfwRUKBoS
+  </data>
+ </layer>
+ <objectgroup color="#ff1200" name="triggers" width="50" height="50" visible="0">
+  <properties>
+   <property name="platform" value=""/>
+  </properties>
+  <object x="0" y="32" width="32" height="1536">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="1568" y="32" width="32" height="1536">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="32" y="0" width="1536" height="32">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="32" y="1568" width="1536" height="32">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="160" y="1472" width="224" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1536" y="1152" width="32" height="64">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object gid="2" x="64" y="1535"/>
+  <object x="544" y="1536" width="352" height="32">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="320" y="1376" width="416" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="1280" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="640" y="1184" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="800" y="1088" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="1088" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="320" y="992" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="896" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="320" y="800" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="704" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="320" y="608" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="512" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="320" y="416" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="480" y="320" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="320" y="224" width="160" height="32">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="672" y="1504" width="192" height="32">
+   <properties>
+    <property name="blockers" value="tlbr"/>
+   </properties>
+  </object>
+  <object x="928" y="1472" width="192" height="64">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#00aa00" name="ladders" width="50" height="50" visible="0">
+  <object x="576" y="1088" width="32" height="192">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+  <object x="480" y="1280" width="32" height="96">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+  <object x="672" y="1376" width="32" height="128">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="Capa de patrones 3" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztzkERwCAAAzCk1L9KRKxc90gU5BwAAAAAAAD4v6wDJVkHSrIOlGQdKMk6UJJ14IOsAyVZB0qyDjyWdaAk60BJ1oGSrANQcgFjRAGh
+  </data>
+ </layer>
+</map>
