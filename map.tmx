@@ -8,7 +8,7 @@
   <image source="sample-tileset.png" width="192" height="128"/>
  </tileset>
  <tileset firstgid="32" name="22231" tilewidth="32" tileheight="32">
-  <image source="../../22231.gif" width="32" height="32"/>
+  <image source="22231.gif" width="32" height="32"/>
  </tileset>
  <layer name="set" width="50" height="50">
   <data encoding="base64" compression="zlib">
