@@ -5,6 +5,7 @@
 # TODO: support properties on more things
 
 import sys
+import os
 import struct
 import pygame
 from pygame.locals import *
@@ -59,10 +60,10 @@ class Tileset(object):
         self.properties = {}
 
     @classmethod
-    def fromxml(cls, tag, firstgid=None):
+    def fromxml(cls, basepath, tag, firstgid=None):
         if 'source' in tag.attrib:
             firstgid = int(tag.attrib['firstgid'])
-            with open(tag.attrib['source']) as f:
+            with open(os.path.join(basepath, tag.attrib['source'])) as f:
                 tileset = ElementTree.fromstring(f.read())
             return cls.fromxml(tileset, firstgid)
 
@@ -77,7 +78,7 @@ class Tileset(object):
         for c in tag.getchildren():
             if c.tag == "image":
                 # create a tileset
-                tileset.add_image(c.attrib['source'])
+                tileset.add_image(os.path.join(basepath, c.attrib['source']))
             elif c.tag == 'tile':
                 gid = tileset.firstgid + int(c.attrib['id'])
                 tileset.get_tile(gid).loadxml(c)
@@ -695,6 +696,7 @@ class TileMap(object):
 
     @classmethod
     def load(cls, filename, viewport):
+        basepath = os.path.dirname(filename)
         with open(filename) as f:
             map = ElementTree.fromstring(f.read())
 
@@ -708,7 +710,7 @@ class TileMap(object):
         tilemap.px_height = tilemap.height * tilemap.tile_height
 
         for tag in map.findall('tileset'):
-            tilemap.tilesets.add(Tileset.fromxml(tag))
+            tilemap.tilesets.add(Tileset.fromxml(basepath, tag))
 
         for tag in map.findall('layer'):
             layer = Layer.fromxml(tag, tilemap)
