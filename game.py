@@ -15,7 +15,7 @@ class Game(object):
 
         self.current_level = Level(1, self)
         self.current_level.start()
-        pygame.mixer.music.play(-1);
+        pygame.mixer.music.play(-1)
 
         while 1:
             dt = clock.tick(30)

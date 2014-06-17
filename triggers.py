@@ -1,64 +1,42 @@
 import pygame
+from base import StaticItem
 
 
-class Trigger(pygame.sprite.Sprite):
-
-    def player_trigger(self, dt, level):
-        pass
-
-    def animate(self, dt, level):
-        pass
-
-    def update(self, dt, level):
-        if level.enemycollide(self, level.player):
-            self.player_trigger(dt, level)
-        self.animate(dt, level)
-
-
-class Box(Trigger):
+class Box(StaticItem):
 
     image = pygame.image.load('resources/sprites/box.png')
 
-    def __init__(self, location, *groups):
-        super(Box, self).__init__(*groups)
-        size = self.image.get_size()
-        y = location[1] + 70 - size[1]
-        self.rect = pygame.rect.Rect((location[0], y), self.image.get_size())
-
     def player_trigger(self, dt, level):
         level.player.weapon = 1
         level.enemies.remove(self)
 
 
-class Weapon(Trigger):
+class Weapon(StaticItem):
 
     sheet = pygame.image.load('resources/sprites/player_weapon.png')
 
-    def __init__(self, location, *groups):
-        super(Weapon, self).__init__(*groups)
-        self.image = self.sheet.subsurface(184, 0, 38, 38)
-        size = self.image.get_size()
-        y = location[1] + 70 - size[1]
-        self.rect = pygame.rect.Rect((location[0], y), self.image.get_size())
+    def get_image(self):
+        return self.sheet.subsurface(184, 0, 38, 38)
 
     def player_trigger(self, dt, level):
         level.player.weapon = 1
         level.enemies.remove(self)
 
 
-class Goal(Trigger):
+class Goal(StaticItem):
     sheet = pygame.image.load('resources/sprites/tent.png')
 
+    def get_image(self):
+        return self.without_player
+
     def __init__(self, location, *groups):
-        super(Goal, self).__init__(*groups)
         self.without_player = self.sheet.subsurface(0, 0, 138, 90)
         self.with_player = self.sheet.subsurface(0, 90, 138, 90)
-        self.image = self.without_player
-        self.rect = pygame.rect.Rect(location, self.image.get_size())
+        super(Goal, self).__init__((location[0], location[1] + 4), *groups)
         self.end = False
         self.wait = 0
 
-    def animate(self, dt, level):
+    def post_update(self, dt, level):
         if self.end:
             self.wait += dt
             if self.wait > 2:

@@ -1,95 +1,9 @@
-#!/usr/bin/env python
-
 import pygame
 from libs import tmx
 from triggers import Box, Weapon, Goal
 
-
-animate = 0.10
-
-class Trigger(pygame.sprite.Sprite):
-
-    def move(self, dt, level):
-        pass
-
-    def player_trigger(self, dt, level):
-        pass
-
-    def animate(self, dt, level):
-        pass
-
-    def update(self, dt, level):
-        self.move(dt, level)
-        if level.enemycollide(self, level.player):
-            self.player_trigger(dt, level)
-        self.animate(dt, level)
-
-
-class Enemy(Trigger):
-    sheet = pygame.image.load('resources/sprites/dino.png')
-
-    def init_images(self):
-        for i in range(5):
-            image = self.sheet.subsurface(48*i, 0, 48, 43)
-            self.walking['left'].append(image)
-            self.walking['right'].append(pygame.transform.flip(image, True, False))
-
-    def __init__(self, location, direction, *groups):
-        super(Enemy, self).__init__(*groups)
-        self.walking = {
-            'left': [],
-            'right': [],
-            'frame': 0,
-        }
-        self.init_images()
-        self.image = self.walking['left'][0]
-        self.rect = pygame.rect.Rect(location, self.image.get_size())
-        self.direction = direction
-        self.cycletime = 0
-
-    def move(self, dt, level):
-        self.rect.x += self.direction * 100 * dt
-        self.cycletime += dt
-        for cell in level.tilemap.layers['triggers'].collide(self.rect, 'reverse'):
-            if self.direction > 0:
-                self.rect.right = cell.left
-            else:
-                self.rect.left = cell.right
-            self.direction *= -1
-            return
-
-    def player_trigger(self, dt, level):
-            level.player.is_dead = True
-
-    def animate(self, dt, level):
-        if self.cycletime > animate:
-            self.cycletime = 0
-            self.walking['frame'] = (self.walking['frame'] + 1) % 5
-        direction = 'left'
-        if self.direction == 1:
-            direction = 'right'
-        self.image = self.walking[direction][self.walking['frame']]
-
-
-class FlyEnemy(Enemy):
-    sheet = pygame.image.load('resources/sprites/fly.png')
-
-    def init_images(self):
-        image = self.sheet.subsurface(0, 0, 60, 60)
-        self.walking['left'].append(image)
-        self.walking['right'].append(pygame.transform.flip(image, True, False))
-        image = self.sheet.subsurface(60, 0, 60, 60)
-        self.walking['left'].append(image)
-        self.walking['right'].append(pygame.transform.flip(image, True, False))
-        image = self.sheet.subsurface(120, 0, 64, 60)
-        self.walking['left'].append(image)
-        self.walking['right'].append(pygame.transform.flip(image, True, False))
-        image = self.sheet.subsurface(184, 0, 65, 60)
-        self.walking['left'].append(image)
-        self.walking['right'].append(pygame.transform.flip(image, True, False))
-        image = self.sheet.subsurface(249, 0, 63, 60)
-        self.walking['left'].append(image)
-        self.walking['right'].append(pygame.transform.flip(image, True, False))
+from config import LEFT, RIGHT, BASE_ANIMATION_LAG
+from character import Enemy, FlyEnemy
 
 
 class Player(pygame.sprite.Sprite):
@@ -102,45 +16,45 @@ class Player(pygame.sprite.Sprite):
         self.die_sound.set_volume(0.2)
         self.sheet = pygame.image.load('resources/sprites/player.png')
         self.weapon_sheet = pygame.image.load('resources/sprites/player_weapon.png')
-        self.direction = 'right'
+        self.direction = RIGHT
         self.walking_pick = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.walking = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.stand = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.attack_pick = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.stand_pick = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.jump = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.jump_pick = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.dead = {
-            'left': [],
-            'right': [],
+            LEFT: [],
+            RIGHT: [],
             'frame': 0,
         }
         self.climb = {
@@ -148,55 +62,55 @@ class Player(pygame.sprite.Sprite):
             'frame': 0,
         }
         for i in range(4):
-            image = self.sheet.subsurface(46*i, 0, 46, 71)
-            self.walking['left'].append(image)
-            self.walking['right'].append(pygame.transform.flip(image, True, False))
+            image = self.sheet.subsurface(46 * i, 0, 46, 71)
+            self.walking[LEFT].append(image)
+            self.walking[RIGHT].append(pygame.transform.flip(image, True, False))
         for i in range(3):
-            image = self.sheet.subsurface(46*i, 71, 46, 71)
-            self.stand['left'].append(image)
-            self.stand['right'].append(pygame.transform.flip(image, True, False))
-        image = self.sheet.subsurface(46*3, 71, 46, 71)
-        self.jump['left'].append(image)
-        self.jump['right'].append(pygame.transform.flip(image, True, False))
+            image = self.sheet.subsurface(46 * i, 71, 46, 71)
+            self.stand[LEFT].append(image)
+            self.stand[RIGHT].append(pygame.transform.flip(image, True, False))
+        image = self.sheet.subsurface(46 * 3, 71, 46, 71)
+        self.jump[LEFT].append(image)
+        self.jump[RIGHT].append(pygame.transform.flip(image, True, False))
 
         for i in range(2):
-            image = self.sheet.subsurface(46*i, 142, 46, 71)
+            image = self.sheet.subsurface(46 * i, 142, 46, 71)
             self.climb['images'].append(image)
 
         image = self.sheet.subsurface(92, 142, 46, 71)
-        self.dead['left'].append(image)
-        self.dead['right'].append(pygame.transform.flip(image, True, False))
+        self.dead[LEFT].append(image)
+        self.dead[RIGHT].append(pygame.transform.flip(image, True, False))
         image = self.sheet.subsurface(138, 170, 63, 43)
-        self.dead['left'].append(image)
-        self.dead['right'].append(pygame.transform.flip(image, True, False))
+        self.dead[LEFT].append(image)
+        self.dead[RIGHT].append(pygame.transform.flip(image, True, False))
 
         for i in range(4):
-            image = self.weapon_sheet.subsurface(46*i, 0, 46, 71)
-            self.walking_pick['left'].append(image)
-            self.walking_pick['right'].append(pygame.transform.flip(image, True, False))
+            image = self.weapon_sheet.subsurface(46 * i, 0, 46, 71)
+            self.walking_pick[LEFT].append(image)
+            self.walking_pick[RIGHT].append(pygame.transform.flip(image, True, False))
         image = self.weapon_sheet.subsurface(0, 71, 46, 71)
-        self.stand_pick['left'].append(image)
-        self.stand_pick['right'].append(pygame.transform.flip(image, True, False))
+        self.stand_pick[LEFT].append(image)
+        self.stand_pick[RIGHT].append(pygame.transform.flip(image, True, False))
 
         image = self.weapon_sheet.subsurface(0, 159, 46, 71)
-        self.jump_pick['left'].append(image)
-        self.jump_pick['right'].append(pygame.transform.flip(image, True, False))
+        self.jump_pick[LEFT].append(image)
+        self.jump_pick[RIGHT].append(pygame.transform.flip(image, True, False))
 
         image = self.weapon_sheet.subsurface(46, 71, 67, 71)
-        self.attack_pick['left'].append(image)
-        self.attack_pick['right'].append(pygame.transform.flip(image, True, False))
+        self.attack_pick[LEFT].append(image)
+        self.attack_pick[RIGHT].append(pygame.transform.flip(image, True, False))
         image = self.weapon_sheet.subsurface(113, 71, 46, 71)
-        self.attack_pick['left'].append(image)
-        self.attack_pick['right'].append(pygame.transform.flip(image, True, False))
+        self.attack_pick[LEFT].append(image)
+        self.attack_pick[RIGHT].append(pygame.transform.flip(image, True, False))
         image = self.weapon_sheet.subsurface(159, 71, 73, 88)
-        self.attack_pick['left'].append(image)
-        self.attack_pick['right'].append(pygame.transform.flip(image, True, False))
+        self.attack_pick[LEFT].append(image)
+        self.attack_pick[RIGHT].append(pygame.transform.flip(image, True, False))
 
         size = (46, 71)
 
-        self.rect = pygame.rect.Rect((location[0], location[1]- 10), size)
+        self.rect = pygame.rect.Rect((location[0], location[1] - 10), size)
         self.image = self.walking[self.direction][self.walking['frame']]
-        self.image.blit(self.sheet, (0,0), self.rect)
+        self.image.blit(self.sheet, (0, 0), self.rect)
         self.resting = False
         self.dy = 0
         self.walking_frame = 0
@@ -239,7 +153,7 @@ class Player(pygame.sprite.Sprite):
                     new.bottom = cell.top
                     self.dy = 0
                     self.onladder = False
-            if climbing and self.cycletime > animate + 0.1:
+            if climbing and self.cycletime > BASE_ANIMATION_LAG + 0.1:
                 self.cycletime = 0
                 self.climb['frame'] = (self.climb['frame'] + 1) % 2
                 self.image = self.climb['images'][self.climb['frame']]
@@ -262,7 +176,7 @@ class Player(pygame.sprite.Sprite):
         self.dy = min(400, self.dy + 40)
         self.rect.y += self.dy * dt
         dx = 100
-        if self.direction == 'right':
+        if self.direction == RIGHT:
             dx = dx * - 1
         if not self.resting:
             self.rect.x += dx * dt
@@ -323,11 +237,11 @@ class Player(pygame.sprite.Sprite):
         elif self.stabbing_wait:
             self.stabbing_wait += dt
 
-        if self.stabbing and self.attack_pick['frame'] == 2 and self.cycletime > animate:
+        if self.stabbing and self.attack_pick['frame'] == 2 and self.cycletime > BASE_ANIMATION_LAG:
             self.stabbing = False
-            size = self.stand['right'][0].get_size()
+            size = self.stand[RIGHT][0].get_size()
             self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), size)
-            if self.direction == 'right':
+            if self.direction == RIGHT:
                 self.rect.left -= 13
             else:
                 self.rect.left += 13
@@ -339,11 +253,11 @@ class Player(pygame.sprite.Sprite):
                 pass
             elif key[pygame.K_LEFT]:
                 self.rect.x -= 300 * dt
-                self.direction = 'left'
+                self.direction = LEFT
                 is_walking = True
             elif key[pygame.K_RIGHT]:
                 self.rect.x += 300 * dt
-                self.direction = 'right'
+                self.direction = RIGHT
                 is_walking = True
 
             if self.resting and key[pygame.K_SPACE]:
@@ -351,7 +265,7 @@ class Player(pygame.sprite.Sprite):
                     if not self.stabbing_wait:
                         self.stabbing = True
                         self.stabbing_wait += dt
-                        if self.direction == 'right':
+                        if self.direction == RIGHT:
                             self.rect.left -= 21
                         else:
                             self.rect.left += 21
@@ -389,13 +303,13 @@ class Player(pygame.sprite.Sprite):
 
         if self.resting and self.stabbing:
             dx = 0
-            if self.cycletime > animate:
+            if self.cycletime > BASE_ANIMATION_LAG:
                 self.cycletime = 0
                 self.attack_pick['frame'] = (self.attack_pick['frame'] + 1) % 3
                 if self.attack_pick['frame'] == 1:
                     dx = -34
             self.image = self.attack_pick[self.direction][self.attack_pick['frame']]
-            if self.direction == 'right':
+            if self.direction == RIGHT:
                 size = self.image.get_size()
                 self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), self.image.get_size())
                 self.rect.left -= dx
@@ -403,21 +317,20 @@ class Player(pygame.sprite.Sprite):
                 self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), self.image.get_size())
                 self.rect.left += dx
         elif self.resting and is_walking:
-            if self.cycletime > animate:
+            if self.cycletime > BASE_ANIMATION_LAG:
                 self.cycletime = 0
                 self.walking['frame'] = (self.walking['frame'] + 1) % 4
             self.image = walking[self.direction][self.walking['frame']]
         elif self.resting:
-            #if self.cycletime > animate * 3:
+            #if self.cycletime > BASE_ANIMATION_LAG * 3:
                 #self.cycletime = 0
                 #self.stand['frame'] = (self.stand['frame'] + 1) % 3
             #self.image = self.stand[self.direction][self.stand['frame']]
             self.image = stand[self.direction][0]
         else:
-            if self.cycletime > animate:
+            if self.cycletime > BASE_ANIMATION_LAG:
                 self.cycletime = 0
                 self.image = jump[self.direction][0]
-
 
 
 class Level(object):
@@ -442,13 +355,13 @@ class Level(object):
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
         goal_cell = self.tilemap.layers['triggers'].find('exit')[0]
-        self.goal = Goal((goal_cell.px, goal_cell.py + 70 - 88), self.enemies)
+        self.goal = Goal((goal_cell.px, goal_cell.py), self.enemies)
 
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             if enemy.properties['type'] == 'f':
-                FlyEnemy((enemy.px, enemy.py + 70 - 60), int(enemy.properties.get('direction', 1)), self.enemies)
+                FlyEnemy((enemy.px, enemy.py), int(enemy.properties.get('direction', '1')), self.enemies)
             else:
-                Enemy((enemy.px, enemy.py + 70 - 43), int(enemy.properties.get('direction', 1)), self.enemies)
+                Enemy((enemy.px, enemy.py), int(enemy.properties.get('direction', '1')), self.enemies)
         for weapon in self.tilemap.layers['triggers'].find('weapon'):
             Weapon((weapon.px, weapon.py), self.enemies)
         for box in self.tilemap.layers['triggers'].find('box'):
