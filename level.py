@@ -2,57 +2,27 @@
 
 import pygame
 from libs import tmx
+from triggers import Box, Weapon, Goal
 
 
 animate = 0.10
 
 class Trigger(pygame.sprite.Sprite):
 
-    def move(self, dt, game):
+    def move(self, dt, level):
         pass
 
-    def player_trigger(self, dt, game):
+    def player_trigger(self, dt, level):
         pass
 
-    def animate(self, dt, game):
+    def animate(self, dt, level):
         pass
 
-    def update(self, dt, game):
-        self.move(dt, game)
-        if game.enemycollide(self, game.player):
-            self.player_trigger(dt, game)
-        self.animate(dt, game)
-
-
-class Box(Trigger):
-
-    image = pygame.image.load('resources/sprites/box.png')
-
-    def __init__(self, location, *groups):
-        super(Box, self).__init__(*groups)
-        size = self.image.get_size()
-        y = location[1] + 70 - size[1]
-        self.rect = pygame.rect.Rect((location[0], y), self.image.get_size())
-
-    def player_trigger(self, dt, game):
-        game.player.weapon = 1
-        game.enemies.remove(self)
-
-
-class Weapon(Trigger):
-
-    sheet = pygame.image.load('resources/sprites/player_weapon.png')
-
-    def __init__(self, location, *groups):
-        super(Weapon, self).__init__(*groups)
-        self.image = self.sheet.subsurface(184, 0, 38, 38)
-        size = self.image.get_size()
-        y = location[1] + 70 - size[1]
-        self.rect = pygame.rect.Rect((location[0], y), self.image.get_size())
-
-    def player_trigger(self, dt, game):
-        game.player.weapon = 1
-        game.enemies.remove(self)
+    def update(self, dt, level):
+        self.move(dt, level)
+        if level.enemycollide(self, level.player):
+            self.player_trigger(dt, level)
+        self.animate(dt, level)
 
 
 class Enemy(Trigger):
@@ -77,10 +47,10 @@ class Enemy(Trigger):
         self.direction = direction
         self.cycletime = 0
 
-    def move(self, dt, game):
+    def move(self, dt, level):
         self.rect.x += self.direction * 100 * dt
         self.cycletime += dt
-        for cell in game.tilemap.layers['triggers'].collide(self.rect, 'reverse'):
+        for cell in level.tilemap.layers['triggers'].collide(self.rect, 'reverse'):
             if self.direction > 0:
                 self.rect.right = cell.left
             else:
@@ -88,10 +58,10 @@ class Enemy(Trigger):
             self.direction *= -1
             return
 
-    def player_trigger(self, dt, game):
-            game.player.is_dead = True
+    def player_trigger(self, dt, level):
+            level.player.is_dead = True
 
-    def animate(self, dt, game):
+    def animate(self, dt, level):
         if self.cycletime > animate:
             self.cycletime = 0
             self.walking['frame'] = (self.walking['frame'] + 1) % 5
@@ -120,33 +90,6 @@ class FlyEnemy(Enemy):
         image = self.sheet.subsurface(249, 0, 63, 60)
         self.walking['left'].append(image)
         self.walking['right'].append(pygame.transform.flip(image, True, False))
-
-
-class Goal(Trigger):
-    sheet = pygame.image.load('resources/sprites/tent.png')
-
-    def __init__(self, location, *groups):
-        super(Goal, self).__init__(*groups)
-        self.without_player = self.sheet.subsurface(0, 0, 138, 90)
-        self.with_player = self.sheet.subsurface(0, 90, 138, 90)
-        self.image = self.without_player
-        self.rect = pygame.rect.Rect(location, self.image.get_size())
-        self.end = False
-        self.wait = 0
-
-    def move(self, dt, game):
-        if self.end:
-            self.wait += dt
-            if self.wait > 2:
-                self.wait = 0
-                self.end = False
-                game.enemies.remove(self)
-                game.start()
-
-    def player_trigger(self, dt, game):
-        self.image = self.with_player
-        self.end = True
-        game.sprites.remove(game.player)
 
 
 class Player(pygame.sprite.Sprite):
@@ -265,7 +208,7 @@ class Player(pygame.sprite.Sprite):
         self.stabbing = False
         self.stabbing_wait = 0
 
-    def update_on_ladder(self, dt, game, key, last):
+    def update_on_ladder(self, dt, level, key, last):
         climbing = False
         new = self.rect
         self.dy = 0
@@ -282,14 +225,14 @@ class Player(pygame.sprite.Sprite):
 
         can_down = False
         self.onladder = False
-        for cell in game.tilemap.layers['ladders'].collide(new, 'ladders'):
+        for cell in level.tilemap.layers['ladders'].collide(new, 'ladders'):
             new.left = cell.left
             if new.bottom <= cell.bottom:
                 can_down = True
             self.onladder = True
 
         if self.onladder:
-            for cell in game.tilemap.layers['triggers'].collide(new, 'blockers'):
+            for cell in level.tilemap.layers['triggers'].collide(new, 'blockers'):
                 blockers = cell['blockers']
                 if not can_down and 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top:
                     self.resting = True
@@ -300,9 +243,9 @@ class Player(pygame.sprite.Sprite):
                 self.cycletime = 0
                 self.climb['frame'] = (self.climb['frame'] + 1) % 2
                 self.image = self.climb['images'][self.climb['frame']]
-        game.tilemap.set_focus(new.x, new.y)
+        level.tilemap.set_focus(new.x, new.y)
 
-    def update_dead(self, dt, game):
+    def update_dead(self, dt, level):
         last = self.rect.copy()
         if not self.begin_animation:
             self.die_sound.play()
@@ -313,8 +256,8 @@ class Player(pygame.sprite.Sprite):
         if self.resting:
             self.wait_restart += dt
             if self.wait_restart > 2:
-                game.sprites.remove(self)
-                game.start()
+                level.sprites.remove(self)
+                level.start()
             return
         self.dy = min(400, self.dy + 40)
         self.rect.y += self.dy * dt
@@ -328,7 +271,7 @@ class Player(pygame.sprite.Sprite):
         new = self.rect
 
         self.resting = False
-        for cell in game.tilemap.layers['triggers'].collide(new, 'blockers'):
+        for cell in level.tilemap.layers['triggers'].collide(new, 'blockers'):
             blockers = cell['blockers']
             if 'l' in blockers and last.right <= cell.left and new.right > cell.left:
                 new.right = cell.left
@@ -341,7 +284,7 @@ class Player(pygame.sprite.Sprite):
             if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom:
                 new.top = cell.bottom
                 self.dy = 0
-        game.tilemap.set_focus(new.x, new.y)
+        level.tilemap.set_focus(new.x, new.y)
 
         if self.resting:
             self.image = self.dead[self.direction][1]
@@ -349,30 +292,30 @@ class Player(pygame.sprite.Sprite):
         else:
             self.image = self.dead[self.direction][0]
 
-    def update(self, dt, game):
+    def update(self, dt, level):
         if self.is_dead:
-            return self.update_dead(dt, game)
+            return self.update_dead(dt, level)
         last = self.rect.copy()
         key = pygame.key.get_pressed()
         self.cycletime += dt
         if self.onladder:
-            return self.update_on_ladder(dt, game, key, last)
+            return self.update_on_ladder(dt, level, key, last)
 
         if self.stabbing:
-            return self.update_on_floor(dt, game, key, last)
+            return self.update_on_floor(dt, level, key, last)
         new = self.rect
         if key[pygame.K_UP]:
-            for cell in game.tilemap.layers['ladders'].collide(new, 'ladders'):
+            for cell in level.tilemap.layers['ladders'].collide(new, 'ladders'):
                 if new.top >= cell.top and new.bottom <= cell.bottom:
                     self.onladder = True
-                    return self.update_on_ladder(dt, game, key, last)
+                    return self.update_on_ladder(dt, level, key, last)
         elif key[pygame.K_DOWN]:
-            if game.tilemap.layers['ladders'].collide(new, 'ladders'):
+            if level.tilemap.layers['ladders'].collide(new, 'ladders'):
                 self.onladder = True
-                return self.update_on_ladder(dt, game, key, last)
-        return self.update_on_floor(dt, game, key, last)
+                return self.update_on_ladder(dt, level, key, last)
+        return self.update_on_floor(dt, level, key, last)
 
-    def update_on_floor(self, dt, game, key, last):
+    def update_on_floor(self, dt, level, key, last):
         is_walking = False
 
         if self.stabbing_wait > 0.8:
@@ -420,7 +363,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += self.dy * dt
             new = self.rect
             self.resting = False
-            for cell in game.tilemap.layers['triggers'].collide(new, 'blockers'):
+            for cell in level.tilemap.layers['triggers'].collide(new, 'blockers'):
                 blockers = cell['blockers']
                 if 'l' in blockers and last.right <= cell.left and new.right > cell.left and new.bottom != cell.top:
                     new.right = cell.left
@@ -433,7 +376,7 @@ class Player(pygame.sprite.Sprite):
                 if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom and new.right != cell.left and new.left != cell.right:
                     new.top = cell.bottom
                     self.dy = 0
-            game.tilemap.set_focus(new.x, new.y)
+            level.tilemap.set_focus(new.x, new.y)
 
         if self.weapon:
             walking = self.walking_pick
@@ -476,30 +419,30 @@ class Player(pygame.sprite.Sprite):
                 self.image = jump[self.direction][0]
 
 
-class ScrolledGroup(pygame.sprite.Group):
-    def draw(self, surface):
-        for sprite in self.sprites():
-            surface.blit(sprite.image, (sprite.rect.x - self.camera_x, sprite.rect.y))
 
+class Level(object):
 
-class Game(object):
+    def __init__(self, level_num, game):
+        self.level_num = level_num
+        self.game = game
+        self.tilemap = tmx.load('resources/maps/map_%03d.tmx' % self.level_num, self.game.screen.get_size())
+        self.enemycollide = pygame.sprite.collide_rect_ratio(0.8)
+        self.sprites = None
+        self.enemies = None
 
     def start(self):
+        if self.sprites:
+            self.tilemap.layers.remove(self.sprites)
+        if self.enemies:
+            self.tilemap.layers.remove(self.enemies)
+
+        self.sprites = tmx.SpriteLayer()
+        self.enemies = tmx.SpriteLayer()
+
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
         goal_cell = self.tilemap.layers['triggers'].find('exit')[0]
         self.goal = Goal((goal_cell.px, goal_cell.py + 70 - 88), self.enemies)
-
-
-    def main(self, screen):
-        clock = pygame.time.Clock()
-        pygame.mixer.init()
-        pygame.mixer.music.load("resources/music/music.mp3")
-        pygame.mixer.music.set_volume(0.5)
-        self.enemycollide = pygame.sprite.collide_rect_ratio(0.8)
-        self.tilemap = tmx.load('resources/maps/map.tmx', screen.get_size())
-        self.sprites = tmx.SpriteLayer()
-        self.enemies = tmx.SpriteLayer()
 
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             if enemy.properties['type'] == 'f':
@@ -510,31 +453,15 @@ class Game(object):
             Weapon((weapon.px, weapon.py), self.enemies)
         for box in self.tilemap.layers['triggers'].find('box'):
             Box((box.px, box.py), self.enemies)
-        self.start()
+
         self.tilemap.layers.append(self.enemies)
-        background = pygame.image.load('resources/backgrounds/background.png')
+        self.background = pygame.image.load('resources/backgrounds/background.png')
         self.tilemap.layers.append(self.sprites)
-        pygame.mixer.music.play(-1);
 
-        while 1:
-            dt = clock.tick(30)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
-                if event.type == pygame.KEYDOWN and \
-                    event.key == pygame.K_ESCAPE:
-                    return
-
-            self.tilemap.update(dt / 1000., self)
-            background_y = min(0, (-self.tilemap.viewport.y / 2) + 2250)
-            background_x = -self.tilemap.viewport.x / 2
-            screen.blit(background, (background_x, background_y))
-            self.tilemap.draw(screen)
-            pygame.display.flip()
-
-
-if __name__ == '__main__':
-    pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
-    Game().main(screen)
+    def update(self, dt):
+        self.tilemap.update(dt, self)
+        background_y = min(0, (-self.tilemap.viewport.y / 2) + 2250)
+        background_x = -self.tilemap.viewport.x / 2
+        self.game.screen.blit(self.background, (background_x, background_y))
+        self.tilemap.draw(self.game.screen)
+        pygame.display.flip()

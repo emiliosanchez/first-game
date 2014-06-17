@@ -225,7 +225,7 @@
     <property name="breakable" value=""/>
    </properties>
   </object>
-  <object x="619" y="6711" width="210" height="70">
+  <object x="630" y="6720" width="210" height="70">
    <properties>
     <property name="blockers" value="tblr"/>
    </properties>
