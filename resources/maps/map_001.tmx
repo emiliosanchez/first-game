@@ -219,12 +219,6 @@
   </object>
   <object gid="54" x="2240" y="5740"/>
   <object gid="55" x="2450" y="6020"/>
-  <object x="2450" y="5880" width="70" height="140">
-   <properties>
-    <property name="blockers" value="tblr"/>
-    <property name="breakable" value=""/>
-   </properties>
-  </object>
   <object x="630" y="6720" width="210" height="70">
    <properties>
     <property name="blockers" value="tblr"/>

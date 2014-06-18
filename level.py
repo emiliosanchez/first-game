@@ -160,6 +160,20 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.climb['images'][self.climb['frame']]
         level.tilemap.set_focus(new.x, new.y)
 
+    def check_block(self, last, collider, blockers):
+        new = self.rect
+        if 'l' in blockers and last.right <= collider.left and new.right > collider.left:
+            new.right = collider.left
+        if 'r' in blockers and last.left >= collider.right and new.left < collider.right:
+            new.left = collider.right
+        if 't' in blockers and last.bottom <= collider.top and new.bottom > collider.top:
+            self.resting = True
+            new.bottom = collider.top
+            self.dy = 0
+        if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom:
+            new.top = collider.bottom
+            self.dy = 0
+
     def update_dead(self, dt, level):
         last = self.rect.copy()
         if not self.begin_animation:
@@ -168,11 +182,11 @@ class Player(pygame.sprite.Sprite):
             self.begin_animation = True
             self.resting = False
             self.wait_restart = 0
+        self.wait_restart += dt
+        if self.wait_restart > 2:
+            level.sprites.remove(self)
+            level.start()
         if self.resting:
-            self.wait_restart += dt
-            if self.wait_restart > 2:
-                level.sprites.remove(self)
-                level.start()
             return
         self.dy = min(400, self.dy + 40)
         self.rect.y += self.dy * dt
@@ -187,18 +201,7 @@ class Player(pygame.sprite.Sprite):
 
         self.resting = False
         for cell in level.tilemap.layers['triggers'].collide(new, 'blockers'):
-            blockers = cell['blockers']
-            if 'l' in blockers and last.right <= cell.left and new.right > cell.left:
-                new.right = cell.left
-            if 'r' in blockers and last.left >= cell.right and new.left < cell.right:
-                new.left = cell.right
-            if 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top:
-                self.resting = True
-                new.bottom = cell.top
-                self.dy = 0
-            if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom:
-                new.top = cell.bottom
-                self.dy = 0
+            self.check_block(last, cell, cell['blockers'])
         level.tilemap.set_focus(new.x, new.y)
 
         if self.resting:
@@ -277,19 +280,14 @@ class Player(pygame.sprite.Sprite):
             new = self.rect
             self.resting = False
             for cell in level.tilemap.layers['triggers'].collide(new, 'blockers'):
-                blockers = cell['blockers']
-                if 'l' in blockers and last.right <= cell.left and new.right > cell.left and new.bottom != cell.top:
-                    new.right = cell.left
-                if 'r' in blockers and last.left >= cell.right and new.left < cell.right and new.bottom != cell.top:
-                    new.left = cell.right
-                if 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top and new.right != cell.left and new.left != cell.right:
-                    self.resting = True
-                    new.bottom = cell.top
-                    self.dy = 0
-                if 'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom and new.right != cell.left and new.left != cell.right:
-                    new.top = cell.bottom
-                    self.dy = 0
+                self.check_block(last, cell, cell['blockers'])
+            for cell in pygame.sprite.spritecollide(self, level.blockers, False):
+                self.check_block(last, cell.rect, cell.blockers)
             level.tilemap.set_focus(new.x, new.y)
+        else:
+            new = self.rect
+            for cell in level.tilemap.layers['triggers'].collide(new, 'breakable'):
+                cell['blockers'] = ''
 
         if self.weapon:
             walking = self.walking_pick
@@ -344,8 +342,10 @@ class Level(object):
         self.enemycollide = pygame.sprite.collide_rect_ratio(0.8)
         self.sprites = None
         self.enemies = None
+        self.blockers = None
 
     def start(self):
+        self.background = pygame.image.load('resources/backgrounds/background.png')
         if self.sprites:
             self.tilemap.layers.remove(self.sprites)
         if self.enemies:
@@ -353,6 +353,7 @@ class Level(object):
 
         self.sprites = tmx.SpriteLayer()
         self.enemies = tmx.SpriteLayer()
+        self.blockers = tmx.SpriteLayer()
 
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
@@ -367,15 +368,17 @@ class Level(object):
         for weapon in self.tilemap.layers['triggers'].find('weapon'):
             Weapon((weapon.px, weapon.py), self.enemies)
         for box in self.tilemap.layers['triggers'].find('box'):
-            Box((box.px, box.py), self.enemies)
+            Box((box.px, box.py), self.blockers)
 
         self.tilemap.layers.append(self.enemies)
-        self.background = pygame.image.load('resources/backgrounds/background.png')
         self.tilemap.layers.append(self.sprites)
+        self.tilemap.layers.append(self.blockers)
 
     def update(self, dt):
         self.tilemap.update(dt, self)
-        background_y = min(0, (-self.tilemap.viewport.y / 2) + 2250)
+        if self.player.rect.bottom > self.tilemap.px_height:
+            self.player.is_dead = True
+        background_y = min(0, (-self.tilemap.viewport.y / 2) + 2260)
         background_x = -self.tilemap.viewport.x / 2
         self.game.screen.blit(self.background, (background_x, background_y))
         self.tilemap.draw(self.game.screen)
