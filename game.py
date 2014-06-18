@@ -6,6 +6,10 @@ from level import Level
 
 class Game(object):
 
+    def next_level(self):
+        self.current_level = Level(self.current_level.level_num + 1, self)
+        self.current_level.start()
+
     def main(self, screen):
         self.screen = screen
         clock = pygame.time.Clock()

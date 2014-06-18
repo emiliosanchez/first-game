@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="100" tilewidth="70" tileheight="70">
+ <tileset firstgid="1" name="sheet" tilewidth="70" tileheight="70">
+  <image source="sheet.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="50" name="triggers" tilewidth="70" tileheight="70">
+  <image source="triggers.png" width="700" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="player" value=""/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="exit" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="enemy" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="reverse" value=""/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="weapon" value=""/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="box" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="60" name="ladder" tilewidth="70" tileheight="70">
+  <image source="ladder.png" width="70" height="70"/>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="40" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1CEOgDAQRcESDBoFGAz3PyPViCVUsCtmkifqfpq0rQEAAAAAAAAAAAAAAAAAWZaXc6a/tuy9I2gd2FXpHkdMvS0oS6V7rfx2yBX9J8/OhH3Xh+aEfTeTmQSX
+  </data>
+ </layer>
+ <objectgroup color="#aa0000" name="triggers" width="40" height="100" visible="0">
+  <object gid="50" x="140" y="6860"/>
+  <object x="0" y="6860" width="840" height="210">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="-70" y="0" width="70" height="7000">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="2800" y="0" width="70" height="7000">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="0" y="0" width="2800" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="210" y="6370" width="630" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1050" y="6370" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1260" y="6230" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1540" y="6230" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1680" y="6370" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1750" y="6580" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2030" y="6580" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2240" y="6440" width="560" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object gid="51" x="2660" y="6440"/>
+  <object x="1190" y="6300" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2100" y="6510" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#00ff00" name="ladders" width="40" height="100" visible="0">
+  <object x="350" y="6370" width="70" height="490">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="Escaleras" width="40" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIAzCE4V8XEjiWwNMqaBUAAAAAAAAAAAAAAAAAwL/+Diz8Mn4ZP64MRQoBpQ==
+  </data>
+ </layer>
+</map>

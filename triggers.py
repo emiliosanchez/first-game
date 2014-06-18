@@ -40,10 +40,7 @@ class Goal(StaticItem):
         if self.end:
             self.wait += dt
             if self.wait > 2:
-                self.wait = 0
-                self.end = False
-                level.enemies.remove(self)
-                level.start()
+                level.game.next_level()
 
     def player_trigger(self, dt, level):
         self.image = self.with_player
