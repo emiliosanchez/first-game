@@ -36,6 +36,7 @@ class Player(pygame.sprite.Sprite):
             LEFT: [],
             RIGHT: [],
             'frame': 0,
+            'animation': 0,
         }
         self.stand_pick = {
             LEFT: [],
@@ -237,15 +238,22 @@ class Player(pygame.sprite.Sprite):
         elif self.stabbing_wait:
             self.stabbing_wait += dt
 
-        if self.stabbing and self.attack_pick['frame'] == 2 and self.cycletime > BASE_ANIMATION_LAG:
+        if self.stabbing and self.attack_pick['frame'] == 2 and self.attack_pick['animation'] > BASE_ANIMATION_LAG:
             self.stabbing = False
             size = self.stand[RIGHT][0].get_size()
             self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), size)
             if self.direction == RIGHT:
                 self.rect.left -= 13
             else:
-                self.rect.left += 13
+                self.rect.left += 41
             last = pygame.rect.Rect((self.rect.x, self.rect.y), size)
+
+        if self.resting and key[pygame.K_SPACE] and self.weapon:
+            if not self.stabbing_wait:
+                self.stabbing = True
+                self.stabbing_wait += dt
+                if self.direction == RIGHT:
+                    self.rect.left -= 21
 
         if not self.stabbing:
             key = pygame.key.get_pressed()
@@ -260,18 +268,9 @@ class Player(pygame.sprite.Sprite):
                 self.direction = RIGHT
                 is_walking = True
 
-            if self.resting and key[pygame.K_SPACE]:
-                if self.weapon:
-                    if not self.stabbing_wait:
-                        self.stabbing = True
-                        self.stabbing_wait += dt
-                        if self.direction == RIGHT:
-                            self.rect.left -= 21
-                        else:
-                            self.rect.left += 21
-                else:
-                    self.dy = -500
-                    self.jump_sound.play()
+            if self.resting and key[pygame.K_SPACE] and not self.weapon:
+                self.dy = -500
+                self.jump_sound.play()
             self.dy = min(400, self.dy + 40)
 
             self.rect.y += self.dy * dt
@@ -303,19 +302,22 @@ class Player(pygame.sprite.Sprite):
 
         if self.resting and self.stabbing:
             dx = 0
-            if self.cycletime > BASE_ANIMATION_LAG:
-                self.cycletime = 0
+            if self.attack_pick['animation'] > BASE_ANIMATION_LAG:
+                self.attack_pick['animation'] = 0
                 self.attack_pick['frame'] = (self.attack_pick['frame'] + 1) % 3
-                if self.attack_pick['frame'] == 1:
-                    dx = -34
-            self.image = self.attack_pick[self.direction][self.attack_pick['frame']]
-            if self.direction == RIGHT:
-                size = self.image.get_size()
-                self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), self.image.get_size())
-                self.rect.left -= dx
+                if self.direction == LEFT:
+                    if self.attack_pick['frame'] == 1:
+                        dx = -14
+                    elif self.attack_pick['frame'] == 2:
+                        dx = -27
+                elif self.attack_pick['frame'] == 1:
+                    dx = 34
             else:
-                self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), self.image.get_size())
-                self.rect.left += dx
+                self.attack_pick['animation'] += dt
+            self.image = self.attack_pick[self.direction][self.attack_pick['frame']]
+            size = self.image.get_size()
+            self.rect = pygame.rect.Rect((self.rect.x, self.rect.y), self.image.get_size())
+            self.rect.left += dx
         elif self.resting and is_walking:
             if self.cycletime > BASE_ANIMATION_LAG:
                 self.cycletime = 0
