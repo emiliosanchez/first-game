@@ -350,6 +350,8 @@ class Level(object):
             self.tilemap.layers.remove(self.sprites)
         if self.enemies:
             self.tilemap.layers.remove(self.enemies)
+        if self.blockers:
+            self.tilemap.layers.remove(self.blockers)
 
         self.sprites = tmx.SpriteLayer()
         self.enemies = tmx.SpriteLayer()

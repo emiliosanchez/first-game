@@ -49,5 +49,5 @@ class Goal(StaticItem):
     def player_trigger(self, dt, level):
         self.image = self.with_player
         self.end = True
-        for group in self.groups():
-            group.remove(self)
+        for group in level.player.groups():
+            group.remove(level.player)
