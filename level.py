@@ -2,7 +2,7 @@ import pygame
 from libs import tmx
 from triggers import Box, Weapon, Goal
 
-from config import LEFT, RIGHT, BASE_ANIMATION_LAG
+from config import LEFT, RIGHT, BASE_ANIMATION_LAG, TILE_SIZE
 from character import Enemy, FlyEnemy
 
 
@@ -109,7 +109,7 @@ class Player(pygame.sprite.Sprite):
 
         size = (46, 71)
 
-        self.rect = pygame.rect.Rect((location[0], location[1] - 10), size)
+        self.rect = pygame.rect.Rect((location[0], location[1] + TILE_SIZE - size[1]), size)
         self.image = self.walking[self.direction][self.walking['frame']]
         self.image.blit(self.sheet, (0, 0), self.rect)
         self.resting = False
@@ -162,17 +162,17 @@ class Player(pygame.sprite.Sprite):
 
     def check_block(self, last, collider, blockers):
         new = self.rect
-        if 'l' in blockers and last.right <= collider.left and new.right > collider.left:
-            new.right = collider.left
-        if 'r' in blockers and last.left >= collider.right and new.left < collider.right:
-            new.left = collider.right
-        if 't' in blockers and last.bottom <= collider.top and new.bottom > collider.top:
+        if 't' in blockers and last.bottom <= collider.top and new.bottom > collider.top and new.right != collider.left and new.left != collider.right:
             self.resting = True
             new.bottom = collider.top
             self.dy = 0
-        if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom:
+        if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom and new.right != collider.left and new.left != collider.right:
             new.top = collider.bottom
             self.dy = 0
+        if 'l' in blockers and last.right <= collider.left and new.right > collider.left and new.bottom != collider.top:
+            new.right = collider.left
+        if 'r' in blockers and last.left >= collider.right and new.left < collider.right and new.bottom != collider.top:
+            new.left = collider.right
 
     def update_dead(self, dt, level):
         last = self.rect.copy()
@@ -372,15 +372,15 @@ class Level(object):
         for box in self.tilemap.layers['triggers'].find('box'):
             Box((box.px, box.py), self.blockers)
 
-        self.tilemap.layers.append(self.enemies)
-        self.tilemap.layers.append(self.sprites)
-        self.tilemap.layers.append(self.blockers)
+        self.tilemap.layers.add_named(self.enemies, 'enemies')
+        self.tilemap.layers.add_named(self.sprites, 'sprites')
+        self.tilemap.layers.add_named(self.blockers, 'blockers')
 
     def update(self, dt):
         self.tilemap.update(dt, self)
         if self.player.rect.bottom > self.tilemap.px_height:
             self.player.is_dead = True
-        background_y = min(0, (-self.tilemap.viewport.y / 2) + 2260)
+        background_y = min(0, (-self.tilemap.viewport.y / 2) + self.tilemap.px_height - self.background.get_size()[1] - 3100)
         background_x = -self.tilemap.viewport.x / 2
         self.game.screen.blit(self.background, (background_x, background_y))
         self.tilemap.draw(self.game.screen)
