@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="100" tilewidth="70" tileheight="70">
+ <tileset firstgid="1" name="sheet" tilewidth="70" tileheight="70">
+  <image source="sheet.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="50" name="triggers" tilewidth="70" tileheight="70">
+  <image source="triggers.png" width="700" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="player" value=""/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="exit" value=""/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="enemy" value=""/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="reverse" value=""/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="weapon" value=""/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="box" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="60" name="ladder" tilewidth="70" tileheight="70">
+  <image source="ladder.png" width="70" height="70"/>
+ </tileset>
+ <layer name="Capa de Patrones 1" width="40" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2MEKgkAUBdBHrWpTrYI2baIW1f//XkbMIhlNHK0hzoG7e+LlDSIaAQAAAAAAAAAAAADwcmjl2DF3zszm0nX9WKdWlh1z68xsLl3Xz91v3+TaZFVpv+TTHmvut2iy/XG/vnOeendj+iW5Peo3/B65c66pX5L2OMezETFdvzl2F/F//S7x/r69V9bvaZPJraJ+36RfGf3K6FdGvzL6ldGvTLvfLob9x/hW+r61a8gD228jnA==
+  </data>
+ </layer>
+ <objectgroup color="#aa0000" name="triggers" width="40" height="100" visible="0">
+  <object gid="50" x="140" y="4970"/>
+  <object x="0" y="4970" width="350" height="2030">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="2800" y="0" width="70" height="7000">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="0" y="0" width="2800" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object gid="51" x="770" y="4970"/>
+  <object gid="52" x="1190" y="6860">
+   <properties>
+    <property name="type" value="d"/>
+   </properties>
+  </object>
+  <object gid="53" x="2800" y="6860"/>
+  <object gid="53" x="280" y="6860"/>
+  <object gid="52" x="1260" y="6790">
+   <properties>
+    <property name="type" value="f"/>
+   </properties>
+  </object>
+  <object gid="53" x="1750" y="6790"/>
+  <object gid="53" x="910" y="6790"/>
+  <object x="840" y="5810" width="280" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="350" y="6860" width="2450" height="140">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="700" y="4970" width="770" height="210">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="840" y="5180" width="630" height="140">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="840" y="5320" width="560" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="980" y="5390" width="420" height="210">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="1120" y="5600" width="280" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="1120" y="5670" width="210" height="210">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="-70" y="0" width="70" height="7000">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup color="#00ff00" name="ladders" width="40" height="100" visible="0">
+  <object x="350" y="6370" width="70" height="490">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+  <object x="1890" y="5670" width="70" height="490">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+  <object x="1260" y="5320" width="70" height="210">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+  <object x="2240" y="4760" width="70" height="910">
+   <properties>
+    <property name="ladders" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="Escaleras" width="40" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAGo+gAAB
+  </data>
+ </layer>
+</map>

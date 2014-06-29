@@ -162,11 +162,11 @@ class Player(pygame.sprite.Sprite):
 
     def check_block(self, last, collider, blockers):
         new = self.rect
-        if 't' in blockers and last.bottom <= collider.top and new.bottom > collider.top and new.right != collider.left and new.left != collider.right:
+        if 't' in blockers and last.bottom <= collider.top and new.bottom > collider.top and last.right != collider.left and last.left != collider.right:
             self.resting = True
             new.bottom = collider.top
             self.dy = 0
-        if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom and new.right != collider.left and new.left != collider.right:
+        if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom and last.right != collider.left and last.left != collider.right:
             new.top = collider.bottom
             self.dy = 0
         if 'l' in blockers and last.right <= collider.left and new.right > collider.left and new.bottom != collider.top:

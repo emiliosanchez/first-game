@@ -41,7 +41,7 @@
  </tileset>
  <layer name="Capa de Patrones 1" width="40" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt1ssKwjAQheGoG3feNupGhKoLKb7/25lCCzEM7UwnbV38H5xNiOHExtQQAAAAAAAAAAAAAAAAAAAAAAAAAHhcYq6K3Nr5r2RsSlthrIpZx7yF7JPPPWJ2E3aRunX9Nsa1PKxrzd3Pul7T7xB059F7/sbssztX2khWMeeBfEZ0+welz86U8nuvapOOHQ3r3UP/WT0J8/OxXDUQaT+Wzl6Wfkuw9Ct1r5ToN8f9N7Zf/nvxPv9n+P1/4eknfUeefk23Oujem5p+2metPQd1Mtfy3iwVzf6WzBcDkh87
+   eJzt1ssOgjAQheGqGzfG68LLwki8LAzx/d/OEiUZmyozlAqL/0vOpqnNASagcwAAAAAAAAAAAAAAAAAAAAAAAABS7Hz2ihzf+29iLadpZO3sM/a5R7IQv7v4zDN2iXWr+02MZ6WwnvXvftbzqn5Lp5vH1Plrc531XGkTM/LZNuTRotsQdD07Ocn3XuFes1flINZXhvNO7vesriP7w7XQTPQKs/lyPZbOqSz9+mDpVz/3YgD95Azmev+17Vd1KyLrsWhc3ef/i5R+4X1r6qnpVjrdd1PTLzaD4TOVnZuefyn2Wr6bXUUzA33mCYOpHoc=
   </data>
  </layer>
  <objectgroup color="#aa0000" name="triggers" width="40" height="100" visible="0">
