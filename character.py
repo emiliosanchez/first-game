@@ -1,7 +1,7 @@
 import pygame
 
 from base import HorizontalMovable
-from config import LEFT, RIGHT
+from config import LEFT, RIGHT, BASE_ANIMATION_LAG
 
 
 class Enemy(HorizontalMovable):
@@ -47,3 +47,41 @@ class FlyEnemy(Enemy):
         image = self.sheet.subsurface(249, 0, 63, 60)
         self.horizontal[LEFT].append(image)
         self.horizontal[RIGHT].append(pygame.transform.flip(image, True, False))
+
+
+class ToucanEnemy(Enemy):
+    sheet = pygame.image.load('resources/sprites/toucan.png')
+
+    def init_horizontal_images(self):
+        image = self.sheet.subsurface(0, 0, 45, 31)
+        self.horizontal[LEFT].append(image)
+        self.horizontal[RIGHT].append(pygame.transform.flip(image, True, False))
+        image = self.sheet.subsurface(45, 0, 45, 31)
+        self.horizontal[LEFT].append(image)
+        self.horizontal[RIGHT].append(pygame.transform.flip(image, True, False))
+        image = self.sheet.subsurface(90, 0, 45, 31)
+        self.horizontal[LEFT].append(image)
+        self.horizontal[RIGHT].append(pygame.transform.flip(image, True, False))
+        image = self.sheet.subsurface(135, 0, 45, 31)
+        self.horizontal[LEFT].append(image)
+        self.horizontal[RIGHT].append(pygame.transform.flip(image, True, False))
+
+    def pre_update(self, dt, level):
+        self.rect.y += self.direction * 100 * dt
+        self.cycletime += dt
+        for cell in level.tilemap.layers['triggers'].collide(self.rect, 'reverse'):
+            if self.direction > 0:
+                self.rect.bottom = cell.top
+            else:
+                self.rect.top = cell.bottom
+            self.direction *= -1
+            return
+
+    def post_update(self, dt, level):
+        if self.cycletime > BASE_ANIMATION_LAG:
+            self.cycletime = 0
+            self.horizontal['current_frame'] = (self.horizontal['current_frame'] + 1) % self.horizontal['frames']
+        if (level.player.rect.x - self.rect.x) > 0:
+            self.image = self.horizontal[RIGHT][self.horizontal['current_frame']]
+        else:
+            self.image = self.horizontal[LEFT][self.horizontal['current_frame']]

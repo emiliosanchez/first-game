@@ -3,7 +3,7 @@ from libs import tmx
 from triggers import Box, Weapon, Goal
 
 from config import LEFT, RIGHT, BASE_ANIMATION_LAG, TILE_SIZE
-from character import Enemy, FlyEnemy
+from character import Enemy, FlyEnemy, ToucanEnemy
 
 
 class Player(pygame.sprite.Sprite):
@@ -152,7 +152,7 @@ class Player(pygame.sprite.Sprite):
                 if not can_down and 't' in blockers and last.bottom <= cell.top and new.bottom > cell.top:
                     self.resting = True
                     new.bottom = cell.top
-                    self.dy = 0
+                    self.dy = 1
                     self.onladder = False
             if climbing and self.cycletime > BASE_ANIMATION_LAG + 0.1:
                 self.cycletime = 0
@@ -169,9 +169,9 @@ class Player(pygame.sprite.Sprite):
         if 'b' in blockers and last.top >= collider.bottom and new.top < collider.bottom and last.right != collider.left and last.left != collider.right:
             new.top = collider.bottom
             self.dy = 0
-        if 'l' in blockers and last.right <= collider.left and new.right > collider.left and new.bottom != collider.top:
+        if 'l' in blockers and last.right <= collider.left and new.right > collider.left and last.bottom != collider.top:
             new.right = collider.left
-        if 'r' in blockers and last.left >= collider.right and new.left < collider.right and new.bottom != collider.top:
+        if 'r' in blockers and last.left >= collider.right and new.left < collider.right and last.bottom != collider.top:
             new.left = collider.right
 
     def update_dead(self, dt, level):
@@ -226,10 +226,12 @@ class Player(pygame.sprite.Sprite):
             for cell in level.tilemap.layers['ladders'].collide(new, 'ladders'):
                 if new.top >= cell.top and new.bottom <= cell.bottom:
                     self.onladder = True
+                    self.image = self.climb['images'][self.climb['frame']]
                     return self.update_on_ladder(dt, level, key, last)
         elif key[pygame.K_DOWN]:
             if level.tilemap.layers['ladders'].collide(new, 'ladders'):
                 self.onladder = True
+                self.image = self.climb['images'][self.climb['frame']]
                 return self.update_on_ladder(dt, level, key, last)
         return self.update_on_floor(dt, level, key, last)
 
@@ -365,6 +367,8 @@ class Level(object):
         for enemy in self.tilemap.layers['triggers'].find('enemy'):
             if enemy.properties['type'] == 'f':
                 FlyEnemy((enemy.px, enemy.py), int(enemy.properties.get('direction', '1')), self.enemies)
+            elif enemy.properties['type'] == 'toucan':
+                ToucanEnemy((enemy.px, enemy.py), int(enemy.properties.get('direction', '1')), self.enemies)
             else:
                 Enemy((enemy.px, enemy.py), int(enemy.properties.get('direction', '1')), self.enemies)
         for weapon in self.tilemap.layers['triggers'].find('weapon'):

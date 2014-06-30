@@ -41,7 +41,7 @@
  </tileset>
  <layer name="Capa de Patrones 1" width="40" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2MEKgkAUBdBHrWpTrYI2baIW1f//XkbMIhlNHK0hzoG7e+LlDSIaAQAAAAAAAAAAAADwcmjl2DF3zszm0nX9WKdWlh1z68xsLl3Xz91v3+TaZFVpv+TTHmvut2iy/XG/vnOeendj+iW5Peo3/B65c66pX5L2OMezETFdvzl2F/F//S7x/r69V9bvaZPJraJ+36RfGf3K6FdGvzL6ldGvTLvfLob9x/hW+r61a8gD228jnA==
+   eJztl01rwzAMQN31kvW0dod9XEph9LKV/f9/14RMYITU2I7rmfIeiIRikYf8pYYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMPOp4uiMOxtjrTj+PQ+V/L5UbJ1xO2OsFV7+vf3exvge47lTP2GpjlN+PN+vHfk9jfHi5A2N/G7N81JuiWPp+rHqmJKb69jCb1DPFn7WPOvc0jVXw0+QOuq9MRjv2tf6Xd4/wrz/a/nVPveER/PT9/ClMz/vfO7FT/athOzfln5W3+Tdo1LPfZjn3uvPavrlEM/3riB/Cc/vFNL60Uv4H78SWvml1M1am9Qvf/3ptfjTyK81Xq+z5v/DrfNuM8a7it8Mt7X9yznKKTmTJ3/PN6bEL3Zb45hCSf9i9Qf3ctTfmO7R1PsiN7ckvG/1ElfFMTBk
   </data>
  </layer>
  <objectgroup color="#aa0000" name="triggers" width="40" height="100" visible="0">
@@ -62,25 +62,20 @@
    </properties>
   </object>
   <object gid="51" x="770" y="4970"/>
-  <object gid="52" x="1190" y="6860">
+  <object gid="52" x="700" y="6860">
    <properties>
     <property name="type" value="d"/>
    </properties>
   </object>
-  <object gid="53" x="2800" y="6860"/>
+  <object gid="53" x="840" y="6860"/>
   <object gid="53" x="280" y="6860"/>
-  <object gid="52" x="1260" y="6790">
+  <object gid="52" x="980" y="6580">
    <properties>
     <property name="type" value="f"/>
    </properties>
   </object>
-  <object gid="53" x="1750" y="6790"/>
-  <object gid="53" x="910" y="6790"/>
-  <object x="840" y="5810" width="280" height="70">
-   <properties>
-    <property name="blockers" value="t"/>
-   </properties>
-  </object>
+  <object gid="53" x="1470" y="6580"/>
+  <object gid="53" x="560" y="6580"/>
   <object x="350" y="6860" width="2450" height="140">
    <properties>
     <property name="blockers" value="tblr"/>
@@ -111,9 +106,9 @@
     <property name="blockers" value="tblr"/>
    </properties>
   </object>
-  <object x="1120" y="5670" width="210" height="210">
+  <object x="1120" y="5670" width="210" height="490">
    <properties>
-    <property name="blockers" value="tblr"/>
+    <property name="blockers" value="tlr"/>
    </properties>
   </object>
   <object x="-70" y="0" width="70" height="7000">
@@ -121,24 +116,279 @@
     <property name="blockers" value="tblr"/>
    </properties>
   </object>
+  <object x="350" y="6020" width="420" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="840" y="5810" width="280" height="210">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object gid="53" x="350" y="6440"/>
+  <object gid="53" x="1260" y="6300"/>
+  <object gid="53" x="1120" y="6160"/>
+  <object gid="53" x="350" y="6160"/>
+  <object gid="52" x="420" y="6160">
+   <properties>
+    <property name="type" value="d"/>
+   </properties>
+  </object>
+  <object gid="52" x="1190" y="6300">
+   <properties>
+    <property name="type" value="d"/>
+   </properties>
+  </object>
+  <object gid="52" x="1050" y="6440">
+   <properties>
+    <property name="type" value="d"/>
+   </properties>
+  </object>
+  <object gid="53" x="1330" y="6440"/>
+  <object x="1330" y="6020" width="140" height="420">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="420" y="6160" width="910" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="350" y="6300" width="910" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="420" y="6440" width="910" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="350" y="6580" width="280" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object gid="53" x="280" y="6300"/>
+  <object x="840" y="6790" width="560" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="910" y="6720" width="420" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="980" y="6650" width="280" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="1050" y="6580" width="140" height="70">
+   <properties>
+    <property name="blockers" value="tblr"/>
+   </properties>
+  </object>
+  <object x="1540" y="6580" width="420" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2100" y="6650" width="140" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2310" y="6580" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object gid="52" x="2100" y="6650">
+   <properties>
+    <property name="type" value="d"/>
+   </properties>
+  </object>
+  <object gid="53" x="2030" y="6650"/>
+  <object gid="53" x="2240" y="6650"/>
+  <object x="2380" y="6510" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2660" y="6580" width="140" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2660" y="5600" width="140" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1540" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1750" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1890" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2170" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2310" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="2520" y="5600" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object gid="52" x="1820" y="5600">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="1820" y="5740"/>
+  <object gid="53" x="1820" y="5320"/>
+  <object gid="53" x="1680" y="5740"/>
+  <object gid="52" x="1680" y="5600">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="1680" y="5390"/>
+  <object gid="53" x="2030" y="5740"/>
+  <object gid="52" x="2030" y="5600">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="2030" y="5460"/>
+  <object gid="53" x="2240" y="5740"/>
+  <object gid="52" x="2240" y="5600">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="2240" y="5250"/>
+  <object gid="53" x="2450" y="5740"/>
+  <object gid="52" x="2450" y="5600">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="2450" y="5460"/>
+  <object x="1610" y="5530" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1750" y="5460" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1890" y="5460" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1960" y="5390" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1820" y="5250" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1890" y="5320" width="70" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1470" y="5180" width="280" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object x="1470" y="4970" width="140" height="70">
+   <properties>
+    <property name="blockers" value="t"/>
+   </properties>
+  </object>
+  <object gid="54" x="2660" y="6860"/>
+  <object gid="55" x="1890" y="6580"/>
+  <object gid="53" x="2590" y="6370"/>
+  <object gid="52" x="2590" y="6790">
+   <properties>
+    <property name="type" value="toucan"/>
+   </properties>
+  </object>
+  <object gid="53" x="2590" y="6930"/>
  </objectgroup>
  <objectgroup color="#00ff00" name="ladders" width="40" height="100" visible="0">
-  <object x="350" y="6370" width="70" height="490">
+  <object x="490" y="6580" width="70" height="280">
    <properties>
     <property name="ladders" value=""/>
    </properties>
   </object>
-  <object x="1890" y="5670" width="70" height="490">
+  <object x="1610" y="6580" width="70" height="280">
    <properties>
     <property name="ladders" value=""/>
    </properties>
   </object>
-  <object x="1260" y="5320" width="70" height="210">
+  <object x="2730" y="5600" width="70" height="980">
    <properties>
     <property name="ladders" value=""/>
    </properties>
   </object>
-  <object x="2240" y="4760" width="70" height="910">
+  <object gid="52" x="2730" y="6370">
+   <properties>
+    <property name="type" value="f"/>
+   </properties>
+  </object>
+  <object gid="52" x="2730" y="6160">
+   <properties>
+    <property name="type" value="f"/>
+   </properties>
+  </object>
+  <object gid="52" x="2730" y="5950">
+   <properties>
+    <property name="type" value="f"/>
+   </properties>
+  </object>
+  <object gid="52" x="2730" y="5740">
+   <properties>
+    <property name="type" value="f"/>
+   </properties>
+  </object>
+  <object gid="53" x="2800" y="5740"/>
+  <object gid="53" x="2800" y="5950"/>
+  <object gid="53" x="2800" y="6160"/>
+  <object gid="53" x="2800" y="6370"/>
+  <object gid="53" x="2450" y="6370"/>
+  <object gid="53" x="2520" y="6160"/>
+  <object gid="53" x="2310" y="5950"/>
+  <object gid="53" x="2520" y="5740"/>
+  <object x="1470" y="4970" width="70" height="210">
    <properties>
     <property name="ladders" value=""/>
    </properties>
@@ -146,7 +396,7 @@
  </objectgroup>
  <layer name="Escaleras" width="40" height="100">
   <data encoding="base64" compression="zlib">
-   eJztwQEBAAAAgJD+r+4ICgAAAAAAAAAAAAAAAAAAAGo+gAAB
+   eJzt1MEJADAIBMEUlv7rSgk+DlHITAGygngOAAAAAAAAAAAAAECfOx1Q0AeQ2f6n9GX0ZfRl9GX0ZfRlqr60v3t/fbPzt9/3Dx7ZBgXd
   </data>
  </layer>
 </map>
