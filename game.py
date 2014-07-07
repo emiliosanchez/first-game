@@ -27,8 +27,8 @@ class Game(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
-                if event.type == pygame.KEYDOWN and \
-                    event.key == pygame.K_ESCAPE:
+                if (event.type == pygame.KEYDOWN and
+                        event.key == pygame.K_ESCAPE):
                     return
 
             self.current_level.update(dt / 1000.)

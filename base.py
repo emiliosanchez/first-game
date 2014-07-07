@@ -1,7 +1,6 @@
 import pygame
 
-import config
-from config import LEFT, RIGHT
+from config import LEFT, RIGHT, BASE_ANIMATION_LAG, TILE_SIZE
 
 
 class StaticItem(pygame.sprite.Sprite):
@@ -16,7 +15,7 @@ class StaticItem(pygame.sprite.Sprite):
         if not self.image:
             self.image = self.get_image()
         size = self.image.get_size()
-        y = location[1] + config.TILE_SIZE - size[1]
+        y = location[1] + TILE_SIZE - size[1]
         self.rect = pygame.rect.Rect((location[0], y), self.image.get_size())
 
     def player_trigger(self, dt, level):
@@ -38,6 +37,7 @@ class StaticItem(pygame.sprite.Sprite):
 class HorizontalMovable(StaticItem):
 
     sheet = None
+    animation_lag = BASE_ANIMATION_LAG
 
     def init_horizontal_images(self):
         raise NotImplementedError
@@ -62,7 +62,10 @@ class HorizontalMovable(StaticItem):
         pass
 
     def post_update(self, dt, level):
-        if self.cycletime > config.BASE_ANIMATION_LAG:
+        if self.cycletime > self.animation_lag:
             self.cycletime = 0
-            self.horizontal['current_frame'] = (self.horizontal['current_frame'] + 1) % self.horizontal['frames']
-        self.image = self.horizontal[self.direction][self.horizontal['current_frame']]
+            self.horizontal['current_frame'] = (
+                self.horizontal['current_frame'] + 1
+            ) % self.horizontal['frames']
+        self.image = self.horizontal[self.direction][
+            self.horizontal['current_frame']]
